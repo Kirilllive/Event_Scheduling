@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Event Horizons</title>
+<meta charset="UTF-8">
+<script src="jquery-3.6.0.min.js"></script>
+<script src="jquery-ui-1.13.1.min.js"></script>
+<style>
+body{
+    background-color: var(--bg_a);
+}
+:root {
+  --bg_a:#211e28;
+  --bg_b:#373548;
+  --bg_p:rgba(55,53,72,0.85);
+  --bord:#9893cf;
+  --button_a:#ccc9e7;
+  --button_b:#e5e4f3;
+  --division_time:56px;
+}
+*{
+	font-family:Arial;
+	border-collapse:collapse;
+	text-decoration:none;
+    font-size:12px;
+	border:none;
+    margin:0;
+	padding:0;
+	border-spacing:0px;
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	outline:none;
+    list-style:none;
+    overscroll-behavior: none;
+}
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance: none;margin: 0;}
+input[type=number]{-moz-appearance:textfield;}
+.input_text{
+	border:0;
+	font-size:12px;
+	-webkit-appearance:none;
+	border-bottom:1px solid var(--bord);
+	background-color:transparent;
+	cursor:text;
+	height:28px;
+	width:100%;
+	-webkit-touch-callout:text;-webkit-user-select:text;-khtml-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text;
+}
+.zone{
+    list-style:none;
+    background-color:var(--bord);
+    border-radius:12px;
+    display:inline;
+    width:238px;
+    margin:4px;
+    padding:0 8px;
+    border-bottom:1px solid var(--bg_b);
+    position:relative;
+}
+.zone_name{
+    width:100%;
+    height:40px;
+    display:flex;
+    justify-content:left;
+    align-items:center;
+}
+.event{
+    width:100%;
+    background-color:var(--button_a);
+    margin-bottom:4px;
+    border-radius:8px;
+    height:32px;
+    position:relative;
+    overflow:hidden;
+}
+.ui-sortable-helper{
+    box-shadow:0px 2px 18px rgba(0,0,0,.35);
+}
+.event .event_size{background-color:var(--button_b);}
+.event .icon_minus:after{content:'';
+    width:8px;height:8px;
+    display:block;
+    background-image: radial-gradient(ellipse at right bottom, transparent 8px,var(--button_b) 8px);
+    position:absolute;left:0px;top:22px;
+}
+.event .icon_minus:before{content:'';
+    width:8px;height:8px;
+    display:block;
+    background-image: radial-gradient(ellipse at right bottom, transparent 8px,var(--button_b) 8px);
+    position:absolute;left:64px;top:0px;
+}
+.event:hover .event_size{background-color:var(--button_a);}
+.event:hover .icon_minus:after{content:'';
+    background-image: radial-gradient(ellipse at right bottom, transparent 8px,var(--button_a) 8px);
+}
+.event:hover .icon_minus:before{content:'';
+    background-image: radial-gradient(ellipse at right bottom, transparent 8px,var(--button_a) 8px);
+}
+.event:after{content:'';
+    width:calc(100% - 32px);height:2px;
+    display:block;
+    border-radius:1px;
+    position:absolute;left:16px;bottom:4px;
+    background-color:var(--button_a);
+}
+.event:hover{
+    background-color:var(--button_b);
+}
+.ui-resizable {
+	position: relative;
+}
+.ui-resizable-s {
+    position:absolute;
+	cursor: s-resize;
+	height: 8px;
+	width: 100%;
+	bottom: 0px;
+	left: 0;
+}
+.events{min-height:var(--division_time);}
+.button{
+    width:calc(100% - 4px);
+    height:24px;
+    margin:8px 0;
+    padding:2px;
+    display:flex;
+    border-radius:8px;
+    background-color:var(--button_a);
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    background-size:20px 20px;
+    background-repeat:no-repeat;
+    background-position:8px center;
+}
+.button:hover{background-color:var(--button_b);}
+.new_zone{
+    width:248px;
+    height: 24px;
+    cursor:pointer;
+    border-radius:12px;
+    display:grid;
+    justify-content:center;
+    align-items:center;
+    margin:4px;
+    padding:4px;
+    background-color:var(--bord);
+    background-size:20px 20px;
+    background-repeat:no-repeat;
+    background-position:8px center;
+}
+.new_zone:hover{background-color:var(--button_b);}
+.division_time{
+    border-bottom:1px solid var(--bord);
+    display:grid;
+    list-style:none;
+    justify-content:center;
+    align-items:start;
+    padding:4px;
+    color:#fff;
+    box-sizing:border-box;
+    height:var(--division_time);
+    width:100%;
+}
+.icon{
+    background-size:20px 20px;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+.icon_m{
+    background-size:14px 14px;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+.el_button{
+    position:absolute;
+    cursor:pointer;
+    right:-6px;
+    top:0px;
+    max-height:20px;
+    height:100%;
+    width:40px;
+}
+.button_menu{
+    cursor:pointer;
+    width:34px;
+    height:34px;
+    margin:4px;
+    border-radius:6px;
+    filter:invert(100%);
+    background-color:transparent;
+}
+.button_menu:hover{
+    background-color:var(--button_b);
+    filter:invert(0%);
+}
+.time_data{padding-right:64px;text-align:center;}
+.icon_new{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cpath fill='none' stroke='%23000' stroke-width='12' stroke-linejoin='round' d='M223,52V249H35V6H176ZM223,53H176V6'/%3e%3c/svg%3e")}
+.icon_load{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cpath fill='none' stroke='%23000' stroke-width='12' stroke-linejoin='round' d='M48,85H252L208,226H5ZM48,85L5,226V51L18,34H65l13,17H208V85H48Z'/%3e%3c/svg%3e")}
+.icon_save{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cpath fill='none' stroke='%23000' stroke-width='12' stroke-linejoin='round' d='M238,51V228a10,10,0,0,1-10,10H27a10,10,0,0,1-10-10V27A10,10,0,0,1,27,17H203ZM39,238V127a10,10,0,0,1,10-10H205a10,10,0,0,1,10,10V238H39ZM174,95H79a10,10,0,0,1-10-10V17H184V85A10,10,0,0,1,174,95ZM168,42a10,10,0,0,0-10-10H144a10,10,0,0,0-10,10V71a10,10,0,0,0,10,10h14a10,10,0,0,0,10-10V42ZM63,162H192m0,49H63'/%3e%3c/svg%3e")}
+.icon_setup{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 128 128'%3e%3cpath fill='none' stroke='%23000' stroke-width='7' stroke-linejoin='round' stroke-linecap='round' d='M28,6a14,14,0,1,1-14,14A14,14,0,0,1,28,6Zm74,44A14,14,0,1,1,88,64,14,14,0,0,1,102,50ZM63,93a14,14,0,1,1-14,14A14,14,0,0,1,64,93ZM49,107H2m0-86h11m-11,43H87m37,43H77M42,20h82m-8,44h8'/%3e%3c/svg%3e")}
+.icon_add{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3ccircle fill='none' stroke='%23000' stroke-width='14' stroke-linejoin='round' cx='128' cy='128' r='120'/%3e%3cpath fill='none' stroke='%23000' stroke-width='14' stroke-linejoin='round' d='M47,128h161M128,208V47'/%3e%3c/svg%3e")}
+.icon_edit{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cpath fill='none' stroke='%23000' stroke-width='12' d='M164,37l53,53-131,131L33,169ZM225,16L238,29a28,28,0,0,1,0,40l-20,20L164,37,185,16A28,28,0,0,1,225,16ZM59,195L190,64M9,245h0l73-22L32,173Z'/%3e%3c/svg%3e")}
+.icon_more{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cg fill='none' stroke='%23000' stroke-width='16' %3e%3ccircle cx='213' cy='128' r='12'/%3e%3ccircle cx='128' cy='128' r='12'/%3e%3ccircle cx='42' cy='128' r='12'/%3e%3c/g%3e%3c/svg%3e")}
+.icon_about{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cg fill='none' stroke='%23000' stroke-width='12' stroke-linejoin='round' %3e%3cpath d='M106,104h22v86M106,192h42'/%3e%3ccircle fill='none' cx='128' cy='64' r='6'/%3e%3ccircle cx='128' cy='128' r='120'/%3e%3c/g%3e%3c/svg%3e")}
+.icon_equal{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cpath fill='none' stroke='%23000' stroke-width='16' stroke-linejoin='round' d='M47,127h161M128,208V47'/%3e%3c/svg%3e")}
+.icon_minus{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cpath fill='none' stroke='%23000' stroke-width='16' stroke-linejoin='round' d='M47,127h161'/%3e%3c/svg%3e")}
+.icon_close{filter:var(--ft);background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3ccircle fill='none' stroke='%23fff' stroke-width='12' stroke-linejoin='round' cx='128' cy='128' r='120'/%3e%3cpath fill='none' stroke='%23fff' stroke-width='12' stroke-linejoin='round' d='M71,184L184,70M184,184L71,70'/%3e%3c/svg%3e")}
+.icon_edit{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='-14 -14 266 266'%3e%3cpath fill='none' stroke='%23000' stroke-width='14' d='M164,37l53,53-131,131L33,169ZM225,16L238,29a28,28,0,0,1,0,40l-20,20L164,37,185,16A28,28,0,0,1,225,16ZM59,195L190,64M9,245h0l73-22L32,173Z'/%3e%3c/svg%3e")}
+.icon_copy{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 64 64'%3e%3cpath fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round' d='M8,61L29,40M30,53V39H16M17,31V14a4,4,0,0,1,4-4h6v4H45V10h6a4,4,0,0,1,4,4V48a4,4,0,0,1-4,4H37M27,18V7h5a4,4,0,0,1,8,0h5V18H27Z'/%3e%3c/svg%3e")}
+.icon_paste{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 64 64'%3e%3cpath fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round' d='M33,39L54,60M55,47V61H41M46,38V14a4,4,0,0,0-4-4H36v4H18V10H12a4,4,0,0,0-4,4V48a4,4,0,0,0,4,4H31M36,18V7H31a4,4,0,0,0-8,0H18V18H36Z'/%3e%3c/svg%3e")}
+.icon_cut{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 64 64'%3e%3cg fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'%3e%3cpath d='M34,34V2l6,12V34m0,6V54m-6-8V40M53.984,40.016h-40l-12-6h44'/%3e%3ccircle cx='32' cy='54' r='8'/%3e%3ccircle cx='54' cy='32' r='8'/%3e%3c/g%3e%3c/svg%3e")}
+.icon_replace{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='-14 -14 266 266'%3e%3cpath fill='none' stroke='%23000' stroke-width='15' d='M251,94l-23,34-34-23M6,161l24-33,35,25M228,128m-15,52c-17.112,28.088-47.628,47-83,47-54.186,0-99.434-43.948-100-98M46,76c17.3-28.1,47.608-47,83-47a99.178,99.178,0,0,1,99,99'/%3e%3c/svg%3e")}
+.icon_del{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 256 256'%3e%3cpath fill='none' stroke='%23000' stroke-width='12' stroke-linejoin='round' d='M194,62V230H63V62M47,45H210M108,23h39V45H108V23ZM128,62V213M92,62V213M164,62V213'/%3e%3c/svg%3e")}
+.icon_dub{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='-12 -2 260 260'%3e%3cg fill='none' stroke='%23000' stroke-width='16' stroke-linejoin='round' %3e%3cpath d='M174,206v26a20,20,0,0,1-20,20H37a20,20,0,0,1-20-20V69A20,20,0,0,1,37,49H82'/%3e%3crect x='82' y='4' width='157' height='203' rx='20' ry='20'/%3e%3c/g%3e%3c/svg%3e")}
+.icon_undo{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 64 64'%3e%3cpath fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round' d='M17,29L5,17,17,5M6,17H37c11.322,0,20,6.678,20,18S48.322,53,37,53H17'/%3e%3c/svg%3e")}
+.icon_print{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 64 64'%3e%3cg fill='none' fill-opacity='0' stroke='%23000' stroke-width='3' stroke-linejoin='round' stroke-linecap='round' %3e%3cpath d='M12,16V3H52V16 M22,43H42 M22,50H42 M48,24h4 M12,49H7a6,6,0,0,1-6-6V22a6,6,0,0,1,6-6H57a6,6,0,0,1,6,6V43a6,6,0,0,1-6,6H52'/%3e%3crect x='12' y='36' width='40' height='25'/%3e%3c/g%3e%3c/svg%3e")}
+.day{
+    display:inline-flex;
+    flex-wrap:nowrap;
+    align-items:flex-start;
+}
+#days{
+    overflow-x: auto;
+    width:calc(100vw - 168px);
+}
+#days,#days ul{display:inline-flex;white-space:nowrap;}
+#days li{
+    display:inline-flex;white-space: nowrap;
+    list-style-type:none;
+    color:#fff;
+    background-color:var(--bord);
+    border-radius:8px;
+    margin:4px;
+}
+#days .name{
+    display:inline;
+    height:34px;
+    max-width:92px;
+    white-space: nowrap;
+    overflow: hidden;
+    padding:0 8px 0 12px;
+    display:grid;justify-content:start;align-items:center;
+    color:#000;
+}
+.day_button{
+    display:inline-block;
+    margin:6px 4px 2px 0;
+    border-radius:4px;
+    cursor:pointer;
+    height:22px;
+    width:22px;
+}
+.day_button:hover{background-color:var(--button_b);}
+.ui-state-active{
+    background-color:var(--button_b)!important;
+}
+.ui-state-hover{
+    background-color:var(--button_a)!important;
+}
+.name_data{
+    padding:8px 4px;
+    white-space:pre-wrap;
+}
+.disc_data{
+    font-size:10px;
+    padding:0px 4px;
+    white-space:pre-wrap;
+}
+#context_menu{
+    background-color:var(--button_a);box-shadow:0px 2px 18px rgba(0,0,0,.35);
+    border-radius:8px;z-index:4;
+}
+#context_menu td{height:34px;padding-left:32px;
+    background-size:20px 20px;
+    background-repeat:no-repeat;
+    background-position:6px center;
+    cursor:pointer;
+}
+#context_menu td:hover{background-color:var(--button_b);}
+#tool_zone{
+    position:fixed;
+    left:76px;top:50vh;
+    z-index:10020;
+    transform:translateY(-50%);
+    justify-content:center;align-items:center;
+}
+#window_zone{
+    height:100vh;width:100%;
+    position:fixed;
+    left:0;top:0;
+    transition-duration:0.5s;z-index:10020;
+    justify-content:center;align-items:center;
+}
+.window_close{position:absolute;right:0px;top:0px;height:40px;width:40px;cursor:pointer;}
+.window_title{position:absolute;right:50%;top:0px;height:40px;transform:translateX(50%);display:grid;justify-content:center;align-items:center;}
+.window{
+    position:relative;
+	backdrop-filter:blur(16px);background-color:var(--bg_p);
+    color:#fff;
+	border-radius:16px;
+	box-shadow:0px 2px 18px rgba(0,0,0,.35);
+    padding:2px 8px 24px 8px;
+}
+.window a, .window .input_text{color:#fff;}
+.window .new_zone{color:#000;}
+textarea{
+    border-top:1px solid var(--bord);
+    border-bottom:1px solid var(--bord);
+    padding:8px 0;resize:none;
+    background-color:transparent;
+    color:#fff;
+	-webkit-touch-callout:text;-webkit-user-select:text;-khtml-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text;
+}
+hr{border-top:1px solid var(--bord);margin:4px 0px;}
+.checkbox_b{height:24px;width:24px;content:none;background:none;-webkit-appearance:none;-moz-appearance:none;appearance:none;border-radius:16px;}
+.checkbox_b:checked {content:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 -8 256 256'%3e%3cpath fill='none' stroke='%23000' stroke-width='18' stroke-linejoin='round' d='M188,84 114,166 67,122'/%3e%3c/svg%3e");}
+
+.set_time{
+    width:64px;height:20px;
+    overflow:hidden;
+    background-color:var(--bord);
+    border-radius:10px;
+}
+.set_time input{
+    color:#fff;
+    text-align:center;
+    width:100%;height:20px;
+    -webkit-appearance:textfield;
+    -moz-appearance:textfield;
+    appearance:textfield;
+    border:0;
+}
+
+</style>
+</head>
+<body>
+<a id="file_save" style="display:none;position:fixed;"></a>
+<input id="file_load" type="file" style="display:none;position:fixed;"/>
+<table style='height:40px;background-color:var(--bg_b);position:fixed;top:0px;left:0px;z-index:2;width:100%;'>
+    <tbody>
+        <tr>
+            <td style='width:42px;'><div title='New project' class='button_menu icon icon_new' onclick="modal_window(true,'setup');new_event();"></div></td>
+            <td style='width:42px;'><div title='Load event' class='button_menu icon icon_load' onclick="file_load.click();"></div></td>
+            <td style='width:42px;'><div title='Save event' class='button_menu icon icon_save' onclick="save_event()"></div></td>
+<!--        <td style='width:42px;'><div title='Export/Print' class='button_menu icon icon_print' onclick="" ></div></td>-->
+            <td style='width:42px;'><div title='Settings project' class='button_menu icon icon_setup' onclick="modal_window(true,'setup');set_show();" ></div></td>
+<!--        <td style='width:42px;'><div title='Undo' class='button_menu icon icon_undo' onclick="" ></div></td>-->
+<!--        <td style='width:42px;'><div title='Redo' class='button_menu icon icon_undo' onclick="" style='transform:scaleX(-1);'></div></td>-->
+            <td id="days">
+                <ul>
+                    <li><a href="#day-1" ondblclick="focus_element=this.parentNode;element_edit();" oncontextmenu="focus_element=this.parentNode;menu_right(event,0);"><div class="name">Day 1</div></a><div class='day_button icon icon_more' onmouseup='focus_element=this.parentNode;menu_right(event,0);'></div></li>
+                </ul>
+                <div class="button_menu icon icon_add" onclick="new_day();" style="min-width:34px;"></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div id='ruler' style='width:64px;position:absolute;top:42px;backdrop-filter:blur(16px);background-color:var(--bg_p);z-index:1;'>
+    <div style="border-bottom:1px solid var(--bord);padding:0 4px;">
+        <table style="width:100%;margin:12px 0;background-color:var(--bord);border-radius:10px;overflow:hidden;" title="time interval in minutes"><tbody><tr>
+        <td style="font-size:0px;"><button class="button_menu icon_minus icon_m" style="border-radius:0px;width:18px;height:20px;margin:0px;" onclick="minutes_separation.stepDown();time_line_update()"></button></td>
+        <td><input id="minutes_separation" min="10" max="60" value="30" type="number" class="input_text" style="color:#fff;text-align:center;width:20px;height:20px;-webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield;border:0;" onchange="if(this.value<10){this.value=10}else if(this.value>60){this.value=60}time_line_update(parseInt(this.value))"></td>
+        <td style="font-size:0px;"><button class="button_menu icon_equal icon_m" style="border-radius:0px;width:18px;height:20px;margin:0px;" onclick="minutes_separation.stepUp();time_line_update()"></button></td>
+        </tr></tbody></table>
+    </div>
+    <ul id='time_line' style="box-shadow:0px 2px 18px rgba(0,0,0,.35);"></ul>
+</div>
+<!---->
+<div id='world' style='padding:44px 0 0 66px;display:inline-flex;flex-wrap:nowrap;'>
+    <ul class="day" id="day-1"></ul>
+    <div id="add_zone" onclick='add_zone();' class='new_zone icon_add'>Add location</div>
+</div>
+<!---->
+<table id='context_menu' style='position:absolute;left:0;top:0;visibility:hidden;width:128px;overflow:hidden;'>
+    <tr><td class="icon_edit" onmousedown="element_edit()" style="background-size:16px 16px;">Edit</td></tr>
+    <tr><td class="icon_cut" onmousedown="copy_element=focus_element.cloneNode(true);focus_element.remove();">Cut</td></tr>
+    <tr><td class="icon_copy" onmousedown="copy_element=focus_element.cloneNode(true);">Copy</td></tr>
+    <tr><td class="icon_paste" onmousedown="paste_element();">Paste</td></tr>
+    <tr><td class="icon_del" onmousedown="if(focus_element.getAttribute('aria-controls')){document.getElementById(focus_element.getAttribute('aria-controls')).remove()};focus_element.remove();times_update();">Delete</td></tr>
+    <tr><td class="icon_replace" onmousedown="{if(focus_element.classList.contains(copy_element.classList)){  if(copy_element.getAttribute('eventtime')){focus_element.setAttribute('eventtime',copy_element.getAttribute('eventtime'))}  focus_element.innerHTML=copy_element.innerHTML};time_line_update();drop_update();}">Replace</td></tr>
+    <tr><td class="icon_dub" style="background-size:16px 16px;">Duplicate</td></tr>
+    <tr><td class="icon_add" onmousedown="add_zone();" style="background-size:16px 16px;">Add location</td></tr>
+    </tbody>
+</table>
+<div id='window_zone' style="display:none" oncontextmenu="context_menu.style.visibility='hidden';"></div>
+<div id='tool_zone' style="display:none" oncontextmenu="context_menu.style.visibility='hidden';"></div>
+
+<div id='setup' style="display:none"><div class='window' style='padding:24px 16px 16px 16px;width:340px;' align="center">
+    <div class="window_title">Event Settings</div>
+    <div class='window_close icon icon_close' onclick='modal_window(false)'></div>
+    <div style="overflow-y: auto; max-height:calc(100vh - 256px);margin:16px 0;">
+    <table style="width:100%;"><tbody>
+        <tr>
+            <td style="padding-right:16px;width:0px;height:40px;white-space: nowrap;" align='right'>Name</td>
+            <td colspan="4"><input id="event_name" class='input_text' type="text" style='width:100%;height:28px;'></td>
+        </tr>
+<!--        <tr>-->
+<!--            <td style="padding-right:16px;width:0px;height:40px;white-space: nowrap;" align='right'>Event date</td>-->
+<!--            <td><input id="event_data" class='input_text' type="text" style='width:100%;height:28px;'></td>-->
+<!--        </tr>-->
+        <tr>
+            <td style="padding-right:16px;width:0px;height:40px;white-space:nowrap;" align='right'>Event start time</td>
+            <td align="right" style="padding-right:8px;">hour</td>
+            <td>
+                <table class="set_time"><tbody><tr>
+                <td class="button_menu icon_minus icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('set_hour_start').stepDown();"></td>
+                <td><input id="set_hour_start" min="0" max="23" value="10" type="number" class="input_text"></td>
+                <td class="button_menu icon_equal icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('set_hour_start').stepUp();"></td>
+                </tr></tbody></table>
+            </td>
+            <td align="right" style="padding:0 8px 0 16px;">minutes</td>
+            <td>
+                <table class="set_time"><tbody><tr>
+                <td class="button_menu icon_minus icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('set_min_start').stepDown();"></td>
+                <td><input id="set_min_start" min="0" max="59" value="0" type="number" class="input_text"></td>
+                <td class="button_menu icon_equal icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('set_min_start').stepUp();"></td>
+                </tr></tbody></table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-right:16px;width:0px;height:40px;white-space: nowrap;" align='right'>Event end time</td>
+            <td align="right" style="padding-right:8px;">hour</td>
+            <td>
+                <table class="set_time"><tbody><tr>
+                <td class="button_menu icon_minus icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('set_hour_end').stepDown();"></td>
+                <td><input id="set_hour_end" min="0" max="23" value="20" type="number" class="input_text"></td>
+                <td class="button_menu icon_equal icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('set_hour_end').stepUp();"></td>
+                </tr></tbody></table>
+            </td>
+            <td align="right" style="padding:0 8px 0 16px;">minutes</td>
+            <td>
+                <table class="set_time"><tbody><tr>
+                <td class="button_menu icon_minus icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('set_min_end').stepDown();"></td>
+                <td><input id="set_min_end" min="0" max="59" value="0" type="number" class="input_text"></td>
+                <td class="button_menu icon_equal icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('set_min_end').stepUp();"></td>
+                </tr></tbody></table>
+            </td>
+        </tr>
+<!--            <td style="padding-right:16px;width:0px;height:40px;white-space: nowrap;" align='right'>Phone</td>-->
+<!--            <td><input id="time" class='input_text' type="text" style='width:100%;height:28px;'></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td style="padding-right:16px;width:0px;height:40px;white-space: nowrap;" align='right'>Email</td>-->
+<!--            <td><input id="time" class='input_text' type="text" style='width:100%;height:28px;'></td>-->
+<!--        </tr>-->
+<!--        <tr><td colspan="2" style="height:25px;padding-bottom:10px;" valign="bottom">Description</td></tr>-->
+<!--        <tr><td colspan="2"><textarea id="element_descr" style="width:100%;height:120px;"></textarea></td></tr>-->
+<!--        <tr><td colspan="2" style="height:25px;padding-bottom:10px;" valign="bottom">Venue address</td></tr>-->
+<!--        <tr><td colspan="2"><textarea id="element_descr" style="width:100%;height:120px;"></textarea></td></tr>-->
+    </tbody></table></div>
+    <div id="apply_set" class='new_zone icon_add' onclick='set_update();times_update();modal_window(false)'>Apply</div>
+</div>
+<div id='element_edit' style="display:none"><div class='window' style='padding:32px 16px 16px 16px;width:412px;'>
+    <div class="window_title">Edit</div>
+    <div class='window_close icon icon_close' onclick='modal_window(false)'></div>
+    <table style="width:100%;"><tbody>
+        <tr>
+            <td style="height:28px;padding-right:16px;width:62px;height:40px;" align='right'>Name</td>
+            <td colspan="4"><input id="element_name" class='input_text' type="text" style='width:100%;height:28px;'></td>
+        </tr>
+        <tr>
+            <td style="height:28px;padding-right:16px;width:62px;height:40px;" align='right'>Time</td>
+            <td align="right" style="padding-right:8px;width:0px;">hour</td><td style="width:0px;">
+                <table class="set_time"><tbody><tr>
+                <td class="button_menu icon_minus icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('time_hour').stepDown();"></td>
+                <td><input id="time_hour" min="0" max="23" value="0" type="number" class="input_text"></td>
+                <td class="button_menu icon_equal icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('time_hour').stepUp();"></td>
+                </tr></tbody></table>
+            </td>
+            <td align="right" style="padding:0 8px 0 16px;width:0px;">minutes</td><td>
+                <table class="set_time"><tbody><tr>
+                <td class="button_menu icon_minus icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('time_minutes').stepDown();"></td>
+                <td><input id="time_minutes" min="0" max="59" value="0" type="number" class="input_text"></td>
+                <td class="button_menu icon_equal icon_m" style="width:20px;height:100%;border-radius:0;" onclick="document.getElementById('time_minutes').stepUp();"></td>
+                </tr></tbody></table>
+            </td>
+        </tr>
+        <tr><td colspan="5" style="height:25px;padding-bottom:10px;" valign="bottom">Description</td></tr>
+        <tr><td colspan="5"><textarea id="element_descr" style="width:100%;height:120px;"></textarea></td></tr>
+        <tr><td colspan="5" style="height:25px;padding-bottom:10px;" valign="bottom">Color</td></tr>
+        <tr><td colspan="5">
+            <form id='element_color' style="display: grid;width:100%; grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto;justify-items: center;align-items: center;">
+                <input style='background-color:var(--button_a);' class="checkbox_b" type='radio' name='color' value='0'>
+                <input style='background-color:hsl(0,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(0,40%,65%)'>
+                <input style='background-color:hsl(30,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(30,40%,65%)'>
+                <input style='background-color:hsl(60,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(60,40%,65%)'>
+                <input style='background-color:hsl(90,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(90,40%,65%)'>
+                <input style='background-color:hsl(120,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(120,40%,65%)'>
+                <input style='background-color:hsl(150,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(150,40%,65%)'>
+                <input style='background-color:hsl(180,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(180,40%,65%)'>
+                <input style='background-color:hsl(210,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(210,40%,65%)'>
+                <input style='background-color:hsl(240,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(240,40%,65%)'>
+                <input style='background-color:hsl(270,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(270,40%,65%)'>
+                <input style='background-color:hsl(300,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(300,40%,65%)'>
+                <input style='background-color:hsl(330,40%,65%);' class="checkbox_b" type='radio' name='color' value='hsl(330,40%,65%)'>
+            </form><br><br>
+        </td></tr>
+        <tr><td colspan="5" style="padding-top:20px;" align='center' valign='bottom'><div class='new_zone icon_add'>Apply</div></td></tr>
+    </tbody></table>
+</div>
+<script>
+var focus_element,copy_element,focus_day=document.getElementById("day-1"),data_event={"events":{}},file_load=document.getElementById('file_load'),ruler=document.getElementById("ruler"),html=document.documentElement,open_time=[600,1200,1440],doc,division_time=56;
+document.addEventListener("scroll",function(){ruler.style.left=html.scrollLeft+"px";});
+document.addEventListener("DOMContentLoaded",function(){
+    $(".events").sortable({connectWith:".events"},{stop:function(evt,ui){times_update()}}).disableSelection();
+    $(".day").sortable({axis:'x'});
+    $("#days ul").sortable({axis:'x'});
+    $("body").tabs({active:0},{activate:function(event,ui){focus_day=document.getElementById(ui.newPanel.attr('id'));}});
+    time_line_update();
+})
+if(window.addEventListener){window.addEventListener('contextmenu',function(e){if(is_text(e)){e.preventDefault();}},false);}
+else{window.attachEvent('oncontextmenu',function(e){if(is_text(e)){window.event.returnValue=false;}});}
+window.addEventListener('mousedown',function(){context_menu.style.visibility='hidden';mouseclick=false;});
+html.addEventListener('contextmenu',function(e){if(is_text(e)){focus_element=focus_day;menu_right(event,1)}},true);
+function is_text(e){return (e.target.tagName.toUpperCase()!== "INPUT"&&e.target.tagName.toUpperCase()!=="TEXTAREA")}
+function menu_right(e,t){
+    e=e||window.event;
+    e.preventDefault();
+    var n=0;while(n<context_menu.getElementsByTagName('tr').length){context_menu.getElementsByTagName('tr')[n].style.display="table-row";n++;}
+    if(!copy_element||!focus_element.classList.contains(copy_element.classList)){context_menu.getElementsByTagName('tr')[5].style.display="none";}
+    if(!copy_element||copy_element.classList.contains('event')&&!focus_element.classList.contains('zone')){context_menu.getElementsByTagName('tr')[3].style.display="none";}
+    else if(!copy_element||copy_element.classList.contains('zone')&&!focus_element.id){context_menu.getElementsByTagName('tr')[3].style.display="none";}
+    if(t==0){
+        context_menu.getElementsByTagName('tr')[1].style.display="none";
+        context_menu.getElementsByTagName('tr')[2].style.display="none";
+        context_menu.getElementsByTagName('tr')[3].style.display="none";
+        context_menu.getElementsByTagName('tr')[5].style.display="none";
+        context_menu.getElementsByTagName('tr')[6].setAttribute("onmousedown","new_day(false,true)");
+        context_menu.getElementsByTagName('tr')[7].style.display="none";
+    }else if(t==1){
+        context_menu.getElementsByTagName('tr')[1].style.display="none";
+        context_menu.getElementsByTagName('tr')[2].style.display="none";
+        context_menu.getElementsByTagName('tr')[4].style.display="none";
+        context_menu.getElementsByTagName('tr')[5].style.display="none";
+        context_menu.getElementsByTagName('tr')[6].style.display="none";
+    }else if(focus_element.classList.contains('zone')){
+        context_menu.getElementsByTagName('tr')[6].setAttribute("onmousedown","add_zone(true);times_update();");
+        context_menu.getElementsByTagName('tr')[7].style.display="none";
+    }else if(focus_element.classList.contains('event')){
+        context_menu.getElementsByTagName('tr')[6].setAttribute("onmousedown","focus_element.parentNode.appendChild(focus_element.cloneNode(true));times_update();drop_update();");
+        context_menu.getElementsByTagName('tr')[7].style.display="none";
+    }
+    context_menu.style.visibility='visible';
+    context_menu.style.left=(e.clientX+html.scrollLeft)+"px";
+    context_menu.style.top=(e.clientY+html.scrollTop)+"px";
+}
+function modal_window(open,id){
+    if(!open){
+        window_zone.style.display="none";window_zone.innerHTML=""
+        html.style.overflow="auto";
+    }else if(open){
+        modal_tool(false);window_zone.style.display="grid";window_zone.innerHTML=document.getElementById(id).innerHTML;
+        html.style.overflow="hidden";
+    }
+}
+function modal_tool(open,id){if(!open){tool_zone.style.display="none"}else if(open){tool_zone.style.display="grid";tool_zone.innerHTML=document.getElementById(id).innerHTML;}}
+function drop_update(){
+    $(".events").sortable({connectWith:".events"},{stop:function(evt,ui){times_update()}}).disableSelection();
+    $(".day").sortable({axis:'x'});
+    $("#days ul").sortable({axis:'x'});
+    $("body").tabs("refresh").on('click',function(){times_update()});
+}
+function times_update(){
+    var l,t,all_time,z=focus_day.getElementsByTagName("ul");
+    for(var i=0;i<z.length;i++){
+        var e=z[i].getElementsByTagName("li");
+        all_time=open_time[0];
+        for(var l=0;l<e.length;l++){
+            t=parseInt(e[l].getAttribute("eventtime"));
+            $(e[l]).resizable( {stop:function(evt,ui){
+                let t=parseInt((minutes_separation.value*ui.size.height)/division_time+4);
+                this.getElementsByClassName('event_time')[0].value=t;
+                this.setAttribute("eventtime",t);times_update();
+             },resize:function(evt,ui){this.getElementsByClassName('event_time')[0].value=parseInt((minutes_separation.value*ui.size.height)/division_time+4);}} );
+            e[l].getElementsByClassName("time_data")[0].innerHTML=text_time(all_time)+" - "+text_time(all_time+t);
+            e[l].getElementsByClassName("input_text")[0].setAttribute("onchange","add_time("+i+","+l+",this.value)");
+            e[l].getElementsByClassName("icon_minus")[0].setAttribute("onclick","add_time("+i+","+l+",-1)");
+            e[l].getElementsByClassName("icon_equal")[0].setAttribute("onclick","add_time("+i+","+l+",1)");
+            e[l].getElementsByClassName("input_text")[0].value=t;
+            all_time+=t;
+        }
+    }
+}
+function set_show(){
+    if(data_event.events.name){event_name.value=data_event.events.name;}
+    if(data_event.events.start){
+        set_hour_start.value=data_event.events.start[0]
+        set_min_start.value=data_event.events.start[1]
+    }
+    if(data_event.events.end){
+        set_hour_end.value=data_event.events.end[0]
+        set_min_end.value=data_event.events.end[1]
+    }
+}
+function set_update(){
+    data_event.events.start=[parseInt(document.getElementById("set_hour_start").value),parseInt(document.getElementById("set_min_start").value)]
+    data_event.events.end=[parseInt(document.getElementById("set_hour_end").value),parseInt(document.getElementById("set_min_end").value)];
+    data_event.events.name=document.getElementById("event_name").value;
+    open_time[0]=(data_event.events.start[0]*60)+data_event.events.start[1];
+    open_time[1]=(data_event.events.end[0]*60)+data_event.events.end[1];
+    time_line_update();
+}
+function add_time(i,l,n){
+    var e=focus_day.getElementsByTagName('ul')[i].getElementsByTagName('li')[l],t=parseInt(e.getAttribute('eventtime'));
+    t=(n>1)?t=n:t+n;
+    t<10?t=10:t>open_time[1]?t=open_time[1]:t=t;
+    e.setAttribute("eventtime",t);
+    e.style.height=((t/minutes_separation.value)*division_time-4)+'px';
+    times_update()
+}
+function time_line_update(){
+    const time_line=document.getElementById("time_line");
+    var i,new_li,day=0,m=parseInt(minutes_separation.value),dt=open_time[1]-open_time[0];
+    time_line.innerHTML="";
+    for(i=0;i<=(dt/m);i++){
+        new_li=document.createElement("li");
+        new_li.className='division_time';
+        new_li.innerHTML=text_time(open_time[0]+day);
+        time_line.appendChild(new_li);
+        day+=m;
+    }
+    ruler.style.minHeight=((document.documentElement.clientHeight<html.offsetHeight)?html.offsetHeight:document.documentElement.clientHeight)+"px";
+    var e=document.getElementsByClassName("event");
+    for(var i=0;i<e.length;i++){e[i].style.height=parseInt((e[i].getAttribute("eventtime")/minutes_separation.value)*division_time-4)+"px"}
+}
+function text_time(t){
+    var hours=Math.floor(t/60),minutes=t-(hours*60);
+    return (hours>23?0:hours)+":"+minutes.toString().padStart(2,'0');
+}
+function new_event(){document.getElementById("apply_set").setAttribute('onclick',"data_event={events:{},days:[{name:'Day 1',description:null,zones:[]}]};set_update();events_update();modal_window(false)")}
+function add_zone(n){
+    var li=document.createElement("li");
+    li.className='zone';
+    li.setAttribute("oncontextmenu","focus_element=this;menu_right(event);");
+    li.setAttribute("ondblclick","focus_element=this;element_edit();");
+    li.innerHTML+="<div class='zone_name'>Name location </div><div class='el_button icon icon_more' style='max-height:40px;right:1px;' onmouseup='focus_element=this.parentNode;menu_right(event);'></div><ul class='events'>"+((n)?focus_element.getElementsByTagName("ul")[0].innerHTML:"")+"</ul><div onclick='add_event(this.closest(\"li\").getElementsByTagName(\"ul\")[0])' class='button icon_add'>New event</div>"
+    focus_day.appendChild(li);
+    drop_update()
+}
+function add_event(event,n){
+    var li=document.createElement("li");
+    li.className='event';
+    li.setAttribute("eventtime",minutes_separation.value)
+    li.setAttribute("oncontextmenu","focus_element=this;menu_right(event);event.stopPropagation();");
+    li.setAttribute("ondblclick","focus_element=this;element_edit();event.stopPropagation();");
+    li.innerHTML+="<table style='width:100%;overflow:hidden;'><tbody><tr>"
+                +"<td style='width:16px;height:22px;width:16px;height:14px;border-radius:0;cursor:pointer;position:relative;' class='icon_minus icon_m event_size' ondblclick='event.stopPropagation();'></td>"
+                +"<td style='width:32px;height:22px;' class='event_size'><input min='10' value='"+minutes_separation.value+"' type='number' class='input_text event_time' style='text-align:center;width:100%;height:14px;border:0;' ondblclick='event.stopPropagation();'></td>"
+                +"<td style='width:16px;height:22px;width:16px;height:14px;border-radius:0 0 8px 0;cursor:pointer;' class='icon_equal icon_m event_size' ondblclick='event.stopPropagation();'></td>"
+                +"<td class='time_data'></td></tr><tr><td class='name_data' colspan='4'> name </td></tr><tr><td class='disc_data' colspan='4'></td></tr></tbody></table><div class='el_button icon icon_more' onmouseup='focus_element=this.parentNode;menu_right(event);'></div>"
+    event.appendChild(li);
+    drop_update();time_line_update();times_update();
+}
+file_load.addEventListener('change',function(e){
+    {
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function(){
+            if(this.readyState==4&&(this.status===200||this.status==0)){
+                data_event=JSON.parse(this.responseText);
+                open_time[0]=(data_event.events.start[0]*60)+data_event.events.start[1];
+                open_time[1]=(data_event.events.end[0]*60)+data_event.events.end[1];
+                events_update();
+            }
+        }
+        xmlhttp.open("GET",URL.createObjectURL(e.target.files[0]),true);
+        xmlhttp.send();
+        xmlhttp.onerror=function(){if(this.status==0){alert('JSON file not loaded');}}
+    }
+});
+function events_update(){
+    var event,zone,day,html="",menu="";
+    var e,z,d;
+    for (d=0;d<data_event.days.length;d++){
+        html+="<ul class='day' id='day-"+(d+1)+"'>"
+        menu+="<li><a href='#day-"+(d+1)+"' ondblclick='focus_element=this.parentNode;element_edit();' oncontextmenu='focus_element=this.parentNode;menu_right(event,0);'><div class='name' description='"+data_event.days[d].description+"'>"+data_event.days[d].name+"</div></a><div class='day_button icon icon_more' style='max-height:var(--division_time);' onmouseup='focus_element=this.parentNode;menu_right(event,0);'></div></li>"
+        for (z=0;z<data_event.days[d].zones.length;z++){
+            html+="<li class='zone' ondblclick='focus_element=this;element_edit();' oncontextmenu='focus_element=this;menu_right(event);' "+((data_event.days[d].zones[z].color)?" style='background-color:"+data_event.days[d].zones[z].color+";'":"")+"><div class='zone_name' description='"+data_event.days[d].zones[z].description+"'>"+data_event.days[d].zones[z].name+"<div class='el_button icon icon_more' style='max-height:40px;right:1px;' onmouseup='focus_element=this.parentNode.parentNode;menu_right(event);'></div></div><ul class='events'>"
+            for (e=0;e<data_event.days[d].zones[z].events.length;e++){
+                var t=(data_event.days[d].zones[z].events[e].time&&data_event.days[d].zones[z].events[e].time!=0)?data_event.days[d].zones[z].events[e].time:30;
+                html+="<li class='event' ondblclick='focus_element=this;element_edit();event.stopPropagation();' oncontextmenu='focus_element=this;menu_right(event);event.stopPropagation();' eventtime="+t+" "+((data_event.days[d].zones[z].events[e].color)?" style='background-color:"+data_event.days[d].zones[z].events[e].color+";'":"")+"><table style='width:100%;overflow:hidden;'><tbody><tr>"
+                    +"<td style='width:16px;height:22px;width:16px;height:14px;border-radius:0;cursor:pointer;position:relative;' class='icon_minus icon_m event_size' ondblclick='event.stopPropagation();'></td>"
+                    +"<td style='width:32px;height:22px;' class='event_size'><input min='10' value='"+minutes_separation.value+"' type='number' class='input_text event_time' style='text-align:center;width:100%;height:14px;border:0;' ondblclick='event.stopPropagation();'></td>"
+                    +"<td style='width:16px;height:22px;width:16px;height:14px;border-radius:0 0 8px 0;cursor:pointer;' class='icon_equal icon_m event_size' ondblclick='event.stopPropagation();'></td>"
+                    +"<td class='time_data'></td></tr><tr><td class='name_data' colspan='4'> "+data_event.days[d].zones[z].events[e].name+" </td></tr><tr><td class='disc_data' colspan='4'>"+data_event.days[d].zones[z].events[e].description+"</td></tr></tbody></table><div class='el_button icon icon_more' onmouseup='focus_element=this.parentNode;menu_right(event);'></div></li>"
+            }html+="</ul><div onclick='add_event(this.closest(\"li\").getElementsByTagName(\"ul\")[0])' class='button icon_add'>Add event</div></li>"
+        }html+="</ul>"
+    }html+="<div id='add_zone' onclick='add_zone();' class='new_zone icon_add'>Add location</div>"
+    world.innerHTML=html;
+    document.getElementById('days').getElementsByTagName('ul')[0].innerHTML=menu;
+    drop_update();time_line_update();times_update();
+}
+function new_day(n,d){
+    n=d?focus_element.textContent+" copy":(!n)?"Day "+(document.getElementById("days").getElementsByTagName("li").length+1):n;
+    var day=document.createElement("li"),days=document.getElementById('days').getElementsByTagName('ul')[0],l=days.getElementsByTagName('li').length+1,name="day-"+l;
+    while(true){if(document.getElementById(name)){l++;name="day-"+l;}else{break;}}
+    day.innerHTML="<a href='#"+name+"'><div class='name'>"+((!n)?focus_element.getElementsByClassName("name")[0].textContent+"-copy":n)+"</div></a><div class='day_button icon icon_more' style='max-height:var(--division_time);' onmouseup='focus_element=this.parentNode;menu_right(event,0);'></div>";
+    day.setAttribute("oncontextmenu","focus_element=this;menu_right(event,0);");
+    days.appendChild(day);
+    day=document.createElement("ul");
+    day.id=name;
+    day.className="day"
+    //if(!n){day.innerHTML=document.getElementById(focus_element.getAttribute("aria-controls")).innerHTML}
+    if(d){day.innerHTML=document.getElementById(focus_element.getElementsByTagName("a")[0].getAttribute("href").replace('#','')).innerHTML};
+    document.getElementById("world").appendChild(day);
+    document.getElementById("world").append(document.getElementById("add_zone"));
+    drop_update();
+}
+function element_edit(){
+    modal_window(true,'element_edit');
+    var n=document.getElementById("element_name"),c=document.getElementById("element_color"),d=document.getElementById("element_descr");c.value=focus_element.style.backgroundColor;
+    if(focus_element.classList.contains('event')){
+        window_zone.getElementsByClassName("window_title")[0].innerHTML+=" event";
+        n.value=focus_element.getElementsByClassName("name_data")[0].textContent.trim();
+        d.value=focus_element.getElementsByClassName("disc_data")[0].textContent.trim();
+        let time=parseInt(focus_element.getElementsByClassName("event_time")[0].value);
+        let hours=Math.floor(time/60);
+        document.getElementById("time_hour").value=hours;
+        document.getElementById("time_minutes").value=time-(hours*60);
+        window_zone.getElementsByClassName("icon_add")[0].setAttribute("onclick","element_colorize();let t=(parseInt(document.getElementById('time_hour').value)*60)+parseInt(document.getElementById('time_minutes').value);update_time_event(t); focus_element.getElementsByClassName('name_data')[0].innerHTML=document.getElementById('element_name').value;focus_element.getElementsByClassName('disc_data')[0].innerHTML=document.getElementById('element_descr').value;modal_window(false);");
+    }
+    else if(focus_element.classList.contains('zone')){
+        window_zone.getElementsByClassName("window_title")[0].innerHTML+=" zone";
+        n.value=focus_element.getElementsByClassName("zone_name")[0].textContent;
+        d.value=focus_element.getElementsByClassName("zone_name")[0].getAttribute("description");
+        window_zone.getElementsByClassName("icon_add")[0].setAttribute("onclick","element_colorize();e=focus_element.getElementsByClassName('zone_name')[0];e.innerHTML=e.innerHTML.replace('"+n.value+"',document.getElementById('element_name').value);e.setAttribute('description',document.getElementById('element_descr').value);modal_window(false);");
+        window_zone.getElementsByTagName("tr")[1].style.display="none";
+    }
+    else if(focus_element.classList.contains('day')||focus_element.getAttribute('aria-controls')){
+        if(focus_element.classList.contains('day')){
+            var z=days.getElementsByTagName("li");
+            for(var i=0;i<z.length;i++){if(z[i].getAttribute('aria-controls')==focus_element.id){focus_element=z[i];break;}}
+        }
+        window_zone.getElementsByClassName("window_title")[0].innerHTML+=" day";
+        n.value=focus_element.getElementsByClassName("name")[0].textContent;
+        d.value=focus_element.getElementsByClassName("name")[0].getAttribute("description");
+        window_zone.getElementsByClassName("icon_add")[0].setAttribute("onclick","element_colorize();e=focus_element.getElementsByClassName('name')[0];e.innerHTML=document.getElementById('element_name').value;e.setAttribute('description',document.getElementById('element_descr').value);modal_window(false);");
+        window_zone.getElementsByTagName("tr")[1].style.display="none";
+        window_zone.getElementsByTagName("tr")[4].style.display="none";
+        window_zone.getElementsByTagName("tr")[5].style.display="none";
+    }
+}
+function update_time_event(t){
+    focus_element.getElementsByClassName('event_time')[0].value=t;
+    focus_element.style.height=((t/minutes_separation.value)*division_time-4)+'px';
+    focus_element.setAttribute("eventtime",t);times_update();
+}
+function element_colorize(){
+    var color_chec=document.forms.element_color;
+    for(i=0;i<color_chec.length;i++){
+        if(color_chec[i].checked){
+            if(color_chec[i].value!=0){focus_element.style.backgroundColor=color_chec[i].value}
+            else{focus_element.style.removeProperty("background-color");}
+        break;}
+    }
+}
+function save_event(){
+    var event,zone,day,day_button=days.getElementsByTagName("li");
+    var e,z,d,r;
+    data_event.days=[];
+    for (d=0;d<day_button.length;d++){
+        day=document.getElementById(day_button[d].getAttribute('aria-controls'));
+        data_event.days.push({"name":day_button[d].getElementsByClassName("name")[0].textContent,"description":day_button[d].getElementsByClassName("name")[0].getAttribute("description"),"color":day_button[d].style.backgroundColor,"zones":[]})
+        zone=day.getElementsByClassName("zone");
+        for (z=0;z<zone.length;z++){
+            data_event.days[d].zones.push({"name":zone[z].getElementsByClassName("zone_name")[0].textContent,"description":zone[z].getElementsByClassName("zone_name")[0].getAttribute("description"),"color":zone[z].style.backgroundColor,"events":[]})
+            event=zone[z].getElementsByClassName("event");
+            for (e=0;e<event.length;e++){
+                var n=(event[e].getElementsByClassName("name_data")[0])?event[e].getElementsByClassName("name_data")[0].textContent:false;
+                var i=(event[e].getElementsByClassName("disc_data")[0])?event[e].getElementsByClassName("disc_data")[0].textContent:false;
+                data_event.days[d].zones[z].events.push({"name":n,"description":i,"color":event[e].style.backgroundColor,"time":event[e].getAttribute("eventtime")})
+            }
+        }
+    }
+    var a=document.getElementById("file_save");
+    a.setAttribute("href","data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(data_event,null,'\t')));
+    a.setAttribute("download",((data_event.events.name&&data_event.events.name.length>0)?data_event.events.name.replace(new RegExp(" ","g"),"_"):"event")+".json");
+    a.click();
+}
+function paste_element(){
+    copy_element=copy_element.cloneNode(true);
+    if(copy_element.classList.contains('event')&&focus_element.classList.contains('zone')){focus_element.getElementsByClassName("events")[0].append(copy_element);}
+    else if(copy_element.classList.contains('zone')&&focus_element.id){focus_element.append(copy_element);drop_update();}
+    times_update();
+}
+</script>
+</body>
+</html>

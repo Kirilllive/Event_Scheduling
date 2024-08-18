@@ -1,0 +1,152 @@
+{"info": {
+    "title": "name"
+},
+"map": {
+    "img": "name"
+},
+"participants": [],
+"events": [
+	[
+		{
+			"zone": "name",
+			"events": [
+				{
+					"name": "5:00 name event",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "6:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "7:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "8:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "9:00 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				}
+			]
+		},
+		{
+			"zone": "name",
+			"events": [
+				{
+					"name": "5:00 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "5:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "6:00 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "6:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "7:00 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				}
+			]
+		}
+	],[
+		{
+			"zone": "name",
+			"events": [
+				{
+					"name": "5:00 name event",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "6:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "7:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "8:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "9:00 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				}
+			]
+		},
+		{
+			"zone": "name",
+			"events": [
+				{
+					"name": "5:00 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "5:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "6:00 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "6:30 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				},
+				{
+					"name": "7:00 name event ",
+					"description": "name",
+					"time": 10,
+					"participants":[]
+				}
+			]
+		}
+	]
+]}
