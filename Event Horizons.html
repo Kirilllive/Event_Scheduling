@@ -606,7 +606,7 @@ function set_update(){
     time_line_update();
 }
 function add_time(i,l,n){
-    var e=focus_day.getElementsByTagName('ul')[i].getElementsByTagName('li')[l],t=parseInt(e.getAttribute('eventtime'));
+    let e=focus_day.getElementsByTagName('ul')[i].getElementsByTagName('li')[l],t=parseInt(e.getAttribute('eventtime'));
     t=(n>1)?t=n:t+n;
     t<10?t=10:t>open_time[1]?t=open_time[1]:t=t;
     e.setAttribute("eventtime",t);
