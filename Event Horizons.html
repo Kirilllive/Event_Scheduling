@@ -566,11 +566,11 @@ function drop_update(){
     $("body").tabs("refresh").on('click',function(){times_update()});
 }
 function times_update(){
-    var l,t,all_time,z=focus_day.getElementsByTagName("ul");
-    for(var i=0;i<z.length;i++){
-        var e=z[i].getElementsByTagName("li");
+    let l,t,all_time,z=focus_day.getElementsByTagName("ul");
+    for(let i=0;i<z.length;i++){
+        let e=z[i].getElementsByTagName("li");
         all_time=open_time[0];
-        for(var l=0;l<e.length;l++){
+        for(let l=0;l<e.length;l++){
             t=parseInt(e[l].getAttribute("eventtime"));
             $(e[l]).resizable( {stop:function(evt,ui){
                 let t=parseInt((minutes_separation.value*ui.size.height)/division_time+4);
