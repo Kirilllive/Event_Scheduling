@@ -5,5 +5,7 @@ is a web-based software for organizing envelopes, conferences, fest, expos and o
 
 The event schedule can be run in a browser and does not require installation of additional software and registration, the schedule is saved in JSON format, which allows you to use the data in other software. All data is processed and stored only on your device.
 
+> Run in browser: https://kirilllive.github.io/Event_Scheduling/Event%20Horizons.html
+
 
 ![Event Scheduling screenshot](https://github.com/user-attachments/assets/eb10abd9-87d5-4c5e-8767-a70e67da8b47)
