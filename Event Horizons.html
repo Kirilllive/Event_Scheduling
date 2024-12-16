@@ -521,7 +521,7 @@ function is_text(e){return (e.target.tagName.toUpperCase()!== "INPUT"&&e.target.
 function menu_right(e,t){
     e=e||window.event;
     e.preventDefault();
-    var n=0;while(n<context_menu.getElementsByTagName('tr').length){context_menu.getElementsByTagName('tr')[n].style.display="table-row";n++;}
+    let n=0;while(n<context_menu.getElementsByTagName('tr').length){context_menu.getElementsByTagName('tr')[n].style.display="table-row";n++;}
     if(!copy_element||!focus_element.classList.contains(copy_element.classList)){context_menu.getElementsByTagName('tr')[5].style.display="none";}
     if(!copy_element||copy_element.classList.contains('event')&&!focus_element.classList.contains('zone')){context_menu.getElementsByTagName('tr')[3].style.display="none";}
     else if(!copy_element||copy_element.classList.contains('zone')&&!focus_element.id){context_menu.getElementsByTagName('tr')[3].style.display="none";}
