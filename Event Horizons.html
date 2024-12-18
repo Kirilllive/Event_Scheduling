@@ -615,7 +615,7 @@ function add_time(i,l,n){
 }
 function time_line_update(){
     const time_line=document.getElementById("time_line");
-    var i,new_li,day=0,m=parseInt(minutes_separation.value),dt=open_time[1]-open_time[0];
+    let i,new_li,day=0,m=parseInt(minutes_separation.value),dt=open_time[1]-open_time[0];
     time_line.innerHTML="";
     for(i=0;i<=(dt/m);i++){
         new_li=document.createElement("li");
