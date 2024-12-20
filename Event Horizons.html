@@ -625,7 +625,7 @@ function time_line_update(){
         day+=m;
     }
     ruler.style.minHeight=((document.documentElement.clientHeight<html.offsetHeight)?html.offsetHeight:document.documentElement.clientHeight)+"px";
-    var e=document.getElementsByClassName("event");
+    let e=document.getElementsByClassName("event");
     for(var i=0;i<e.length;i++){e[i].style.height=parseInt((e[i].getAttribute("eventtime")/minutes_separation.value)*division_time-4)+"px"}
 }
 function text_time(t){
