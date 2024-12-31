@@ -629,7 +629,7 @@ function time_line_update(){
     for(let i=0;i<e.length;i++){e[i].style.height=parseInt((e[i].getAttribute("eventtime")/minutes_separation.value)*division_time-4)+"px"}
 }
 function text_time(t){
-    var hours=Math.floor(t/60),minutes=t-(hours*60);
+    let hours=Math.floor(t/60),minutes=t-(hours*60);
     return (hours>23?0:hours)+":"+minutes.toString().padStart(2,'0');
 }
 function new_event(){document.getElementById("apply_set").setAttribute('onclick',"data_event={events:{},days:[{name:'Day 1',description:null,zones:[]}]};set_update();events_update();modal_window(false)")}
