@@ -634,7 +634,7 @@ function text_time(t){
 }
 function new_event(){document.getElementById("apply_set").setAttribute('onclick',"data_event={events:{},days:[{name:'Day 1',description:null,zones:[]}]};set_update();events_update();modal_window(false)")}
 function add_zone(n){
-    var li=document.createElement("li");
+    let li=document.createElement("li");
     li.className='zone';
     li.setAttribute("oncontextmenu","focus_element=this;menu_right(event);");
     li.setAttribute("ondblclick","focus_element=this;element_edit();");
