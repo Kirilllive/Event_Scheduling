@@ -750,7 +750,7 @@ function update_time_event(t){
     focus_element.setAttribute("eventtime",t);times_update();
 }
 function element_colorize(){
-    var color_chec=document.forms.element_color;
+    let color_chec=document.forms.element_color;
     for(i=0;i<color_chec.length;i++){
         if(color_chec[i].checked){
             if(color_chec[i].value!=0){focus_element.style.backgroundColor=color_chec[i].value}
