@@ -643,7 +643,7 @@ function add_zone(n){
     drop_update()
 }
 function add_event(event,n){
-    var li=document.createElement("li");
+    let li=document.createElement("li");
     li.className='event';
     li.setAttribute("eventtime",minutes_separation.value)
     li.setAttribute("oncontextmenu","focus_element=this;menu_right(event);event.stopPropagation();");
