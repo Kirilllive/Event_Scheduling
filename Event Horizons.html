@@ -658,7 +658,7 @@ function add_event(event,n){
 }
 file_load.addEventListener('change',function(e){
     {
-        var xmlhttp=new XMLHttpRequest();
+        let xmlhttp=new XMLHttpRequest();
         xmlhttp.onreadystatechange=function(){
             if(this.readyState==4&&(this.status===200||this.status==0)){
                 data_event=JSON.parse(this.responseText);
