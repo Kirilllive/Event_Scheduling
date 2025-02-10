@@ -674,7 +674,7 @@ file_load.addEventListener('change',function(e){
 });
 function events_update(){
     let event,zone,day,html="",menu="";
-     let e,z,d;
+let e,z,d;
     for (d=0;d<data_event.days.length;d++){
         html+="<ul class='day' id='day-"+(d+1)+"'>"
         menu+="<li><a href='#day-"+(d+1)+"' ondblclick='focus_element=this.parentNode;element_edit();' oncontextmenu='focus_element=this.parentNode;menu_right(event,0);'><div class='name' description='"+data_event.days[d].description+"'>"+data_event.days[d].name+"</div></a><div class='day_button icon icon_more' style='max-height:var(--division_time);' onmouseup='focus_element=this.parentNode;menu_right(event,0);'></div></li>"
