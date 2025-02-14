@@ -696,7 +696,7 @@ let e,z,d;
 }
 function new_day(n,d){
     n=d?focus_element.textContent+" copy":(!n)?"Day "+(document.getElementById("days").getElementsByTagName("li").length+1):n;
-    var day=document.createElement("li"),days=document.getElementById('days').getElementsByTagName('ul')[0],l=days.getElementsByTagName('li').length+1,name="day-"+l;
+    let day=document.createElement("li"),days=document.getElementById('days').getElementsByTagName('ul')[0],l=days.getElementsByTagName('li').length+1,name="day-"+l;
     while(true){if(document.getElementById(name)){l++;name="day-"+l;}else{break;}}
     day.innerHTML="<a href='#"+name+"'><div class='name'>"+((!n)?focus_element.getElementsByClassName("name")[0].textContent+"-copy":n)+"</div></a><div class='day_button icon icon_more' style='max-height:var(--division_time);' onmouseup='focus_element=this.parentNode;menu_right(event,0);'></div>";
     day.setAttribute("oncontextmenu","focus_element=this;menu_right(event,0);");
