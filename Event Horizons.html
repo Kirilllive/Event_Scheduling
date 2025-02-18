@@ -712,7 +712,7 @@ function new_day(n,d){
 }
 function element_edit(){
     modal_window(true,'element_edit');
-    var n=document.getElementById("element_name"),c=document.getElementById("element_color"),d=document.getElementById("element_descr");c.value=focus_element.style.backgroundColor;
+    let n=document.getElementById("element_name"),c=document.getElementById("element_color"),d=document.getElementById("element_descr");c.value=focus_element.style.backgroundColor;
     if(focus_element.classList.contains('event')){
         window_zone.getElementsByClassName("window_title")[0].innerHTML+=" event";
         n.value=focus_element.getElementsByClassName("name_data")[0].textContent.trim();
