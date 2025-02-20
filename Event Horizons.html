@@ -733,7 +733,7 @@ function element_edit(){
     else if(focus_element.classList.contains('day')||focus_element.getAttribute('aria-controls')){
         if(focus_element.classList.contains('day')){
             let z=days.getElementsByTagName("li");
-            for(var i=0;i<z.length;i++){if(z[i].getAttribute('aria-controls')==focus_element.id){focus_element=z[i];break;}}
+            for(let i=0;i<z.length;i++){if(z[i].getAttribute('aria-controls')==focus_element.id){focus_element=z[i];break;}}
         }
         window_zone.getElementsByClassName("window_title")[0].innerHTML+=" day";
         n.value=focus_element.getElementsByClassName("name")[0].textContent;
