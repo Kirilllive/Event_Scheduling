@@ -770,7 +770,7 @@ function save_event(){
             data_event.days[d].zones.push({"name":zone[z].getElementsByClassName("zone_name")[0].textContent,"description":zone[z].getElementsByClassName("zone_name")[0].getAttribute("description"),"color":zone[z].style.backgroundColor,"events":[]})
             event=zone[z].getElementsByClassName("event");
             for (e=0;e<event.length;e++){
-                var n=(event[e].getElementsByClassName("name_data")[0])?event[e].getElementsByClassName("name_data")[0].textContent:false;
+                let n=(event[e].getElementsByClassName("name_data")[0])?event[e].getElementsByClassName("name_data")[0].textContent:false;
                 var i=(event[e].getElementsByClassName("disc_data")[0])?event[e].getElementsByClassName("disc_data")[0].textContent:false;
                 data_event.days[d].zones[z].events.push({"name":n,"description":i,"color":event[e].style.backgroundColor,"time":event[e].getAttribute("eventtime")})
             }
