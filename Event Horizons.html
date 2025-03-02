@@ -776,7 +776,7 @@ function save_event(){
             }
         }
     }
-    var a=document.getElementById("file_save");
+    let a=document.getElementById("file_save");
     a.setAttribute("href","data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(data_event,null,'\t')));
     a.setAttribute("download",((data_event.events.name&&data_event.events.name.length>0)?data_event.events.name.replace(new RegExp(" ","g"),"_"):"event")+".json");
     a.click();
