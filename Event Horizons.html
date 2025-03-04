@@ -704,7 +704,6 @@ function new_day(n,d){
     day=document.createElement("ul");
     day.id=name;
     day.className="day"
-    //if(!n){day.innerHTML=document.getElementById(focus_element.getAttribute("aria-controls")).innerHTML}
     if(d){day.innerHTML=document.getElementById(focus_element.getElementsByTagName("a")[0].getAttribute("href").replace('#','')).innerHTML};
     document.getElementById("world").appendChild(day);
     document.getElementById("world").append(document.getElementById("add_zone"));
