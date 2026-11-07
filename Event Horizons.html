@@ -487,7 +487,7 @@ hr{border-top:1px solid var(--bord);margin:4px 0px;}
     </tbody></table>
 </div>
 <script>
-var focus_element,copy_element,focus_day=document.getElementById("day-1"),data_event={"events":{}},file_load=document.getElementById('file_load'),ruler=document.getElementById("ruler"),html=document.documentElement,open_time=[600,1200,1440],doc,division_time=56;
+var focus_element,copy_element,focus_day=document.getElementById("day-1"),data_event={"events":{"start":[10,0],"end":[20,0],"name":""}},file_load=document.getElementById('file_load'),ruler=document.getElementById("ruler"),html=document.documentElement,open_time=[600,1200,1440],doc,division_time=56;
 document.addEventListener("scroll",function(){ruler.style.left=html.scrollLeft+"px";});
 document.addEventListener("DOMContentLoaded",function(){
     $(".events").sortable({connectWith:".events"},{stop:function(evt,ui){times_update()}}).disableSelection();
